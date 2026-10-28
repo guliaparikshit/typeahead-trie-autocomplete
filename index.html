@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0a1021" />
+  <meta name="description" content="An interactive Trie-based Text Auto-Completion System by Parikshit Gulia, B.Tech CSE, SGT University." />
+  <title>TypeAhead — Text Auto-Completion System | Parikshit Gulia</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page-glow glow-one" aria-hidden="true"></div>
+  <div class="page-glow glow-two" aria-hidden="true"></div>
+  <header class="site-header">
+    <a href="#home" class="brand" aria-label="TypeAhead home"><span class="brand-icon">T<span class="brand-star">✦</span></span><span>TYPE<span class="brand-em">AHEAD</span><small>ALGORITHM LAB</small></span></a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="#playground">Live demo</a>
+      <a href="#visualizer">Trie visualizer</a>
+      <a href="#complexity">Complexity</a>
+      <a href="#about">About</a>
+    </nav>
+    <a class="nav-cta" href="#playground">Try it live <span aria-hidden="true">↗</span></a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Open navigation" aria-expanded="false">☰</button>
+  </header>
+
+  <main>
+    <section id="home" class="hero content-width">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="live-dot"></span> ALGORITHMS &amp; DATA STRUCTURES <span class="eyebrow-divider">/</span> TEXT AUTO-COMPLETION SYSTEM</div>
+        <h1>Great sentences<br />start with a <em>single letter.</em></h1>
+        <p>Meet <strong>TypeAhead</strong> — a real, working text auto-completion system. Start typing, see smart word suggestions, and watch the <strong>Trie algorithm</strong> find them in real time.</p>
+        <div class="hero-actions"><a class="btn btn-primary" href="#playground">Try the live project <span>↗</span></a><a class="btn btn-outline" href="#how-it-works">How does it work? <span>→</span></a></div>
+        <div class="hero-meta"><span><span class="checkmark">✓</span> No login required</span><span><span class="checkmark">✓</span> Works offline</span><span><span class="checkmark">✓</span> Real algorithm, not AI</span></div>
+      </div>
+      <div class="hero-art" aria-label="Illustration of how auto-completion works">
+        <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div>
+        <div class="floating-tag tag-one"><span>✦</span> Prefix search</div>
+        <div class="floating-tag tag-two"><span>↗</span> Faster typing</div>
+        <div class="hero-editor">
+          <div class="hero-editor-top"><span class="mini-dots"><i></i><i></i><i></i></span><span>smart_editor.txt</span><span class="hero-code-icon">⌘</span></div>
+          <div class="hero-editor-inner"><div class="line-num">01<br />02<br />03</div><div class="code-preview"><div>Let's build something</div><div><span class="code-keyword">pro</span><span class="fake-caret"></span></div><div class="ghost-line">▋</div></div></div>
+          <div class="hero-suggestions"><div class="hero-suggestion-heading"><span class="suggest-hex">✦</span> AUTOCOMPLETE <span>3 RESULTS</span></div><div class="hero-suggestion selected"><span class="hero-word">↳ project</span><span class="hero-enter">↵</span></div><div class="hero-suggestion"><span class="hero-word">↳ program</span><span>↗</span></div><div class="hero-suggestion"><span class="hero-word">↳ programming</span><span>↗</span></div></div>
+          <div class="hero-editor-bottom"><span><span class="live-dot"></span> Trie engine ready</span><span>UTF-8&nbsp; • &nbsp;JavaScript</span></div>
+        </div>
+        <span class="hero-star star-a">✳</span><span class="hero-star star-b">✦</span>
+      </div>
+    </section>
+
+    <section class="stats-strip content-width" aria-label="Project highlights">
+      <div><div class="stat-icon">⌘</div><div><strong id="statWords">—</strong><span>Words in dictionary</span></div></div>
+      <div><div class="stat-icon">♧</div><div><strong id="statNodes">—</strong><span>Trie nodes</span></div></div>
+      <div><div class="stat-icon">⚡</div><div><strong>O(P + K)</strong><span>Suggestion lookup*</span></div></div>
+      <div><div class="stat-icon">∞</div><div><strong>100%</strong><span>Works in browser</span></div></div>
+    </section>
+
+    <section id="playground" class="section content-width">
+      <div class="section-head"><div><div class="section-kicker"><span>01</span> THE PLAYGROUND</div><h2>Don't just read about it.<br /><span>Try it yourself.</span></h2><p>Type a sentence, click a suggestion, or use the arrow keys and Enter. This is the actual working project.</p></div><div class="section-side-note"><span class="pulse-light"></span> INTERACTIVE SYSTEM ONLINE</div></div>
+      <div class="playground-grid">
+        <div class="editor-panel">
+          <div class="panel-top"><div class="panel-title"><span class="panel-title-icon">✳</span><div><strong>Smart Text Editor</strong><small>LIVE AUTOCOMPLETE</small></div></div><button class="text-button" id="clearText">↺ Clear text</button></div>
+          <div class="editor-body"><label for="editor" class="sr-only">Type your text to receive word suggestions</label><textarea id="editor" aria-describedby="editorHint" spellcheck="false" placeholder="Start typing here... for example: I am building a pro" rows="7"></textarea>
+          <div class="suggestion-wrap"><div id="suggestions" class="suggestions" role="listbox" aria-label="Auto-completion suggestions" hidden></div></div>
+          <div class="editor-placeholder" id="emptyHint"><span>✦</span> Try typing: <button data-demo="pro">pro</button><button data-demo="alg">alg</button><button data-demo="com">com</button><button data-demo="dat">dat</button></div></div>
+          <div class="editor-bottom"><span id="editorHint"><span class="keyboard-key">↑</span><span class="keyboard-key">↓</span> Navigate <span class="keyboard-key">Enter</span> Insert <span class="keyboard-key">Esc</span> Close</span><span><span id="wordCounter">0</span> words</span></div>
+        </div>
+        <aside class="insights-panel"><div class="insights-header"><span class="mini-label">LIVE INSIGHTS</span><span class="badge-status"><span></span> Running</span></div><h3>Inside the engine</h3><p>See what the algorithm is doing while you type.</p>
+          <div class="insight-grid"><div class="insight-card"><span>Current prefix</span><strong class="mono" id="currentPrefix">—</strong></div><div class="insight-card"><span>Matches found</span><strong class="mono" id="matchesCount">0</strong></div><div class="insight-card"><span>Letters traversed</span><strong class="mono" id="traversedCount">0</strong></div><div class="insight-card"><span>Lookup time</span><strong class="mono" id="lookupTime">—</strong></div></div>
+          <div class="filter-title">DICTIONARY CATEGORY</div><div class="filter-bar" id="filterBar"><button class="filter active" data-category="all" aria-pressed="true">All</button><button class="filter" data-category="technology" aria-pressed="false">Tech</button><button class="filter" data-category="everyday" aria-pressed="false">Everyday</button><button class="filter" data-category="academic" aria-pressed="false">Academic</button></div>
+          <div class="engine-note"><span>💡</span><p><strong>Did you know?</strong> Choosing a suggestion increases its popularity score. Your most-used words appear earlier next time.</p></div>
+        </aside>
+      </div>
+      <div class="word-manager"><div><strong>Make the dictionary your own</strong><p>Add a new word and watch it become searchable immediately. Changes are saved on this browser.</p></div><form id="addWordForm" class="add-form"><label for="newWord" class="sr-only">New dictionary word</label><input id="newWord" placeholder="e.g. innovation" maxlength="30" autocomplete="off" /><button type="submit" class="btn btn-small">+ Add word</button></form><div id="addWordMessage" class="form-status" role="status" aria-live="polite"></div><button id="resetData" class="reset-link">Reset my dictionary ↺</button></div>
+    </section>
+
+    <section id="how-it-works" class="section section-darker"><div class="content-width"><div class="section-kicker"><span>02</span> UNDER THE HOOD</div><div class="section-head compact-head"><div><h2>How autocomplete <span>actually works.</span></h2><p>Nothing magical. Just a clever tree that remembers the path to every word.</p></div></div>
+      <div class="flow-grid"><div class="flow-card"><div class="flow-icon">01</div><div class="flow-doodle">⌨</div><h3>You type a prefix</h3><p>For example, you enter <code>pro</code> in the text editor.</p></div><div class="flow-arrow">→</div><div class="flow-card"><div class="flow-icon">02</div><div class="flow-doodle">♧</div><h3>Trie walks the letters</h3><p>It follows <code>ROOT → p → r → o</code> in a tree.</p></div><div class="flow-arrow">→</div><div class="flow-card"><div class="flow-icon">03</div><div class="flow-doodle">✦</div><h3>Suggestions appear</h3><p>Matching words like <code>project</code> and <code>program</code> are ranked by usage.</p></div></div>
+      <div class="analogy-box"><span class="analogy-icon">📖</span><div><strong>Think of a dictionary with shortcuts.</strong><p>Imagine opening a dictionary directly at the letters <em>pro</em> instead of reading every single word from A to Z. A Trie follows letter-by-letter branches to jump straight to the right words.</p></div></div>
+      </div></section>
+
+    <section id="visualizer" class="section content-width"><div class="section-kicker"><span>03</span> TRIE VISUALIZER</div><div class="section-head compact-head"><div><h2>Watch the algorithm <span>think.</span></h2><p>Trace a prefix through real Trie nodes, one character at a time.</p></div><span class="tech-badge">INTERACTIVE ALGORITHM</span></div>
+      <div class="viz-panel"><div class="viz-toolbar"><label for="vizPrefix">PREFIX TO SEARCH</label><div class="viz-search"><input id="vizPrefix" type="text" value="pro" spellcheck="false" maxlength="16" aria-label="Prefix to visualize" /><button id="traceButton" class="btn btn-small">Trace prefix ↗</button></div><div class="viz-presets"><span>Examples:</span><button data-prefix="pro">pro</button><button data-prefix="alg">alg</button><button data-prefix="dat">dat</button><button data-prefix="xyz">xyz</button></div></div>
+        <div class="viz-stage"><div class="viz-stage-label"><span><span class="live-dot"></span> TRIE TRAVERSAL</span><span id="stepLabel">STEP 0 / 3</span></div><div class="tree-scroll"><div class="tree-path" id="triePath"></div><div class="branch-area" id="branchArea"></div></div><div class="step-explanation" id="stepExplanation" aria-live="polite">We start at the ROOT of the Trie.</div><div class="viz-bottom"><div class="viz-actions"><button class="viz-button" id="prevStep">← Previous</button><button class="viz-button primary-viz" id="nextStep">Next step →</button><button class="viz-button" id="showAllSteps">Show all</button></div><div class="viz-result" id="vizResult">Select “Next step” to start.</div></div></div>
+      </div>
+      <div class="code-explainer"><div class="code-window"><div class="code-window-top"><span class="mini-dots"><i></i><i></i><i></i></span><span>autocomplete.js — pseudocode</span><span>TRIE</span></div><pre><code><span class="syntax-purple">function</span> <span class="syntax-green">autocomplete</span>(prefix) {
+  node = trie.root
+
+  <span class="syntax-purple">for each</span> letter <span class="syntax-purple">in</span> prefix:
+    <span class="syntax-purple">if</span> letter <span class="syntax-purple">not in</span> node.children:
+      <span class="syntax-purple">return</span> []
+    node = node.children[letter]
+
+  <span class="syntax-purple">return</span> node.topSuggestions
+}</code></pre></div><div class="code-description"><span class="mini-label">THE CORE IDEA</span><h3>Search only the letters you need.</h3><p>Unlike a normal list that checks words one by one, a Trie gives every letter its own path. Each node stores its <strong>top 8 suggestions</strong>, already sorted by popularity.</p><p>Once the prefix is found, the best suggestions are already waiting there. This is called <strong>cached top-K retrieval</strong>.</p><div class="code-footnote">*Building/updating the Trie takes extra work and memory, so that live lookups can be fast.</div></div></div>
+    </section>
+
+    <section id="complexity" class="section section-darker"><div class="content-width"><div class="section-kicker"><span>04</span> ALGORITHM DESIGNS AND COMPLEXITY</div><div class="section-head compact-head"><div><h2>Smarter structure. <span>Faster search.</span></h2><p>Why we chose a Trie instead of scanning every word in a list.</p></div></div>
+      <div class="complexity-cards"><div class="complexity-card"><div class="complexity-card-header"><span>NAIVE LINEAR SEARCH</span><span class="slow-tag">CHECKS ALL WORDS</span></div><div class="big-o">O(N × P)</div><p>For each of the N dictionary words, check whether it starts with the P-letter prefix. Ranking results adds extra work.</p><div class="complexity-track"><div class="track-slow"></div></div></div><div class="complexity-card featured"><div class="complexity-card-header"><span>OUR TRIE APPROACH</span><span class="fast-tag">PREFIX LOOKUP</span></div><div class="big-o">O(P + K)</div><p>Follow P characters through Trie nodes, then display up to K precomputed suggestions. No full dictionary scan during lookup.</p><div class="complexity-track"><div class="track-fast"></div></div></div></div>
+      <div class="complexity-table-wrap"><table class="complexity-table"><thead><tr><th>Operation</th><th>Simple array</th><th>Our Trie</th><th>Easy meaning</th></tr></thead><tbody><tr><td>Find prefix</td><td>O(N × P)</td><td class="highlight-cell">O(P)</td><td>Walk the typed letters</td></tr><tr><td>Return suggestions</td><td>Ranking can add work</td><td class="highlight-cell">O(K)</td><td>Read the stored top K words</td></tr><tr><td>Insert one word</td><td>O(1) append*</td><td>O(L × K log K)</td><td>Update cached suggestions along L letters</td></tr><tr><td>Memory</td><td>O(total characters)</td><td>More: nodes + top-K caches</td><td>Trading memory for speed</td></tr></tbody></table><p class="table-note">N = number of words; P = prefix length; K = maximum suggestions (8); L = inserted word length. *Append excludes any indexing or ranking work. With fixed K = 8, insertion is effectively O(L). Our demo rebuilds its Trie when frequencies or dictionary entries change.</p></div>
+      <div class="benchmark"><div class="benchmark-intro"><div><span class="mini-label">LIVE PERFORMANCE EXPERIMENT</span><h3>Test both approaches in your browser.</h3><p>Runs repeated searches on the same dictionary. Results are measurements on your device, not hard-coded numbers.</p></div><button id="runBenchmark" class="btn btn-primary">Run benchmark ⚡</button></div><div id="benchResults" class="benchmark-results"><div class="bench-empty">Click “Run benchmark” to see actual timings.</div></div></div>
+      </div></section>
+
+    <section class="section content-width" id="features"><div class="section-kicker"><span>05</span> PROJECT FEATURES</div><div class="section-head compact-head"><div><h2>Built for a <span>real demonstration.</span></h2><p>Each feature can be shown to your teacher during the project presentation.</p></div></div><div class="feature-grid"><div class="feature-card"><span>⚡</span><h3>Instant suggestions</h3><p>Recommendations update as you type, without refreshing the page.</p></div><div class="feature-card"><span>⌨</span><h3>Keyboard navigation</h3><p>Arrow keys to choose suggestions and Enter to insert a word.</p></div><div class="feature-card"><span>♧</span><h3>Live Trie visualization</h3><p>See how letters are traversed through the search tree.</p></div><div class="feature-card"><span>✦</span><h3>Popularity ranking</h3><p>Selected words gain a higher frequency score and appear sooner.</p></div><div class="feature-card"><span>＋</span><h3>Custom vocabulary</h3><p>Add your own words and find them through the same Trie algorithm.</p></div><div class="feature-card"><span>▤</span><h3>Complexity comparison</h3><p>Compare linear search and Trie prefix lookup on your own browser.</p></div></div></section>
+
+    <section id="about" class="section section-darker about-section"><div class="content-width"><div class="section-kicker"><span>06</span> ABOUT THE PROJECT</div><div class="about-grid"><div><h2>One simple idea.<br /><span>A smarter way to type.</span></h2><p class="about-lead">TypeAhead is an interactive <strong>algorithms and data structures</strong> project created for my B.Tech Computer Science &amp; Engineering portfolio. It demonstrates how efficient prefix-search structures help real applications respond quickly to user input.</p><div class="about-facts"><div><span>PROJECT TITLE</span><strong>Text Auto-Completion System</strong></div><div><span>MAIN DATA STRUCTURE</span><strong>Trie (Prefix Tree)</strong></div><div><span>TECHNOLOGIES</span><strong>HTML · CSS · JavaScript</strong></div><div><span>DEPLOYMENT</span><strong>Static website · No server needed</strong></div></div></div></div>
+      <div class="team-block"><div class="team-head"><div><div class="section-kicker"><span>07</span> PROJECT DEVELOPER</div><h2>Behind the <span>project.</span></h2></div><div class="team-tag">B.TECH · COMPUTER SCIENCE &amp; ENGINEERING</div></div><div class="team-grid solo-developer-grid"><article class="team-card"><div class="avatar">P</div><span class="team-index">PORTFOLIO PROJECT · 2026</span><h3>Parikshit Gulia</h3><p>B.Tech — Computer Science &amp; Engineering</p><div class="team-course">SGT UNIVERSITY · GURUGRAM, INDIA</div></article></div></div>
+    </div></section>
+  </main>
+  <footer class="footer"><div class="content-width footer-content"><div><span class="footer-brand">TYPE<span>AHEAD</span> ✦</span><p>A Text Auto-Completion System powered by the Trie data structure.</p></div><div><strong>Algorithm Designs and Complexity</strong><span>B.Tech CSE Portfolio Project • 2026</span></div><a href="#home">Back to top ↑</a></div></footer>
+  <script src="dictionary.js"></script>
+  <script src="trie.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
